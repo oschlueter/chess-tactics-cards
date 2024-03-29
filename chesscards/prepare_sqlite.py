@@ -15,6 +15,7 @@ def prepare_sqlite(csv_fn: str, sqlite_fn: str):
 
     # Split the 'Themes' column into a list of themes and explode it
     df_themes = df[["PuzzleId", "Themes"]]
+    df_themes = df_themes.copy()
     df_themes["Themes"] = df["Themes"].str.split(" ")
     df_themes = df_themes.explode("Themes")
 
@@ -34,5 +35,5 @@ def prepare_sqlite(csv_fn: str, sqlite_fn: str):
 
 
 if __name__ == "__main__":
-    # prepare_sqlite("lichess_db_puzzle.csv", "lichess_db_puzzle.db")
-    prepare_sqlite("tests/data/sample.csv", "sample.db")
+    prepare_sqlite("lichess_db_puzzle.csv", "lichess_db_puzzle.db")
+    # prepare_sqlite("tests/data/sample.csv", "sample.db")
