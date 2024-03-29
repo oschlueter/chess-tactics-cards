@@ -50,6 +50,23 @@ class TestCard:
             str(Path(__file__).resolve().parent / "data/review_log.jsonl")
         )
 
+    def test_load__deck_does_not_exist__raises_value_error(self):
+        # given
+        deck = Deck('foo')
+
+        # then
+        with pytest.raises(ValueError, match='does not exist'):
+            # when
+            deck.load()
+
+    @pytest.mark.skip(reason="will implement this later")
+    def test_due__scenario__result(self):
+        pass
+
+    @pytest.mark.skip(reason="will implement this later")
+    def test_not_due__scenario__result(self):
+        pass
+
 
 class TestDeck:
     def test_save_deck__sample__stores_deck_correctly(self, sample_deck):

@@ -26,6 +26,9 @@ addopts = [
     '--cov=chesscards',
 ]
 
+[tool.coverage.report]
+show_missing = true
+
 [tool.black]
 line-length = 120
 

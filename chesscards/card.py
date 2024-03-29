@@ -85,12 +85,6 @@ class Deck:
                 f.write(json.dumps(log.__dict__, default=str))
                 f.write("\n")
 
-    def _mkdir(self):
-        self.cards_path.mkdir(parents=True, exist_ok=True)
-
-    def exists(self):
-        return self.cards_path.exists()
-
     def load(self):
         if not self.cards_path.exists():
             raise ValueError(f"deck {self.name} does not exist!")
