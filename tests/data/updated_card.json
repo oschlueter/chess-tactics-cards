@@ -1,5 +1,5 @@
 {
-    "due": "2024-01-01 12:10:00",
+    "due": "2024-01-01 12:10:00.000001",
     "stability": 2.4,
     "difficulty": 4.93,
     "elapsed_days": 0,
@@ -11,5 +11,5 @@
     "fen": "r6k/pp2r2p/4Rp1Q/3p4/8/1N1P2R1/PqP2bPP/7K b - - 0 24",
     "moves": "f2g3 e6e7 b2b1 b3c1 b1c1 h6c1",
     "themes": "crushing hangingPiece long middlegame",
-    "last_review": "2024-01-01 12:00:00"
+    "last_review": "2024-01-01 12:00:00.000001"
 }

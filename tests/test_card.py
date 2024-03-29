@@ -17,13 +17,13 @@ def sample_deck(tmp_path):
     decks_path = tmp_path / "decks"
     deck_name = "test-deck"
 
-    with freezegun.freeze_time("2024-01-01 12:00:00"):
+    with freezegun.freeze_time("2024-01-01 12:00:00.000001"):
         deck = Deck.create_from_csv(deck_name, csv_fn, str(decks_path))
 
     yield deck
 
 
-@freezegun.freeze_time("2024-01-01 12:00:00")
+@freezegun.freeze_time("2024-01-01 12:00:00.000001")
 class TestCard:
     def test_save_card__with_review_log__stores_card_and_review_log_correctly(self, sample_deck: Deck):
         # given

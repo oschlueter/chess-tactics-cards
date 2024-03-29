@@ -19,5 +19,8 @@ sample:
 extract:
 	python extract.py
 
-requirements:
-	pip freeze > requirements.txt
+deck:
+	poetry run python chesscards/prepare_deck.py
+
+train:
+	poetry run python chesscards/main.py
