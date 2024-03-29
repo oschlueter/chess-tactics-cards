@@ -1,5 +1,3 @@
-import csv
-import random
 import re
 from datetime import datetime, timedelta
 from io import BytesIO
