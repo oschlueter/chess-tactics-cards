@@ -1,16 +1,17 @@
 import pandas as pd
 import sqlite3
 
-if __name__ == '__main__':
+
+def prepare_sqlite(csv_fn: str, sqlite_fn: str):
     # Read the CSV file into a DataFrame
-    df = pd.read_csv('lichess_db_puzzle.csv')
+    df = pd.read_csv(csv_fn)
 
     # Split the 'Themes' column into a list of themes and explode it
     df['Themes'] = df['Themes'].str.split(' ')
     df = df.explode('Themes')
 
     # Connect to SQLite database
-    conn = sqlite3.connect('lichess_db_puzzle.db')
+    conn = sqlite3.connect(sqlite_fn)
 
     # Write DataFrame to SQLite table
     df.to_sql('tactics', conn, if_exists='replace', index=False)
@@ -21,3 +22,7 @@ if __name__ == '__main__':
 
     # Close the connection
     conn.close()
+
+
+if __name__ == '__main__':
+    prepare_sqlite('lichess_db_puzzle.csv', 'lichess_db_puzzle.db')
