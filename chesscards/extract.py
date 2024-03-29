@@ -94,4 +94,4 @@ if __name__ == "__main__":
         ]
     )
 
-    extract_tactics(db_fn, r, r + 200, t, 10)
+    extract_tactics(db_fn, r, r + 200, 90, t, 10)
