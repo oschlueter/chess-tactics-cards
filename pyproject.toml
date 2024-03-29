@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "chesscards"
+version = "0.1.0"
+description = "spaced repetition for chess tactics"
+authors = ["oschlueter <10252511+oschlueter@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fsrs = "^1.0"
+CairoSVG = "^2.0"
+chess = "^1.0"
+matplotlib = "^3.0"
+pillow = "^10.0"
+pandas = "^2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
