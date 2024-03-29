@@ -1,6 +1,6 @@
 import pytest as pytest
 
-from main import is_variation_okay
+from chesscards.main import is_variation_okay
 
 
 @pytest.mark.parametrize('expected_input,user_input,expected', [

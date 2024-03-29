@@ -1,7 +1,7 @@
 import sqlite3
 
 
-from prepare_sqlite import prepare_sqlite
+from chesscards.prepare_sqlite import prepare_sqlite
 
 
 def test_prepare_sqlite__sample__creates_expected_sqlite(tmp_path):
