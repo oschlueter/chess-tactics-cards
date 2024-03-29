@@ -80,9 +80,9 @@ class Deck:
         with open(str(self.cards_path / f"{card.id}.json"), "w") as f:
             f.write(json.dumps(card.__dict__, default=str, indent=4))
 
-        # if log:
-        #     with open(str(self.logs_path / f"{card.id}.jsonl"), "a") as f:
-        #         f.write(json.dumps(log.__dict__, default=str))
+        if log:
+            with open(str(self.logs_path / f"{card.id}.jsonl"), "a") as f:
+                f.write(json.dumps(log.__dict__, default=str))
 
     def _mkdir(self):
         self.cards_path.mkdir(parents=True, exist_ok=True)
@@ -129,3 +129,5 @@ class Deck:
                 decks_dir,
             )
             deck.save_deck()
+
+            return deck

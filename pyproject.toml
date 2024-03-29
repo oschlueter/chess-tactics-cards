@@ -19,11 +19,15 @@ pandas = "^2.0"
 pytest = "^8.0"
 pytest-cov = "^5.0.0"
 black = "^24.3.0"
+freezegun = "^1.4.0"
 
 [tool.pytest.ini_options]
 addopts = [
     '--cov=chesscards',
 ]
+
+[tool.black]
+line-length = 120
 
 [build-system]
 requires = ["poetry-core"]

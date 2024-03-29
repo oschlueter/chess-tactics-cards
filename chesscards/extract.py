@@ -8,9 +8,7 @@ def remove_duplicates(tuples):
     for tuple in tuples:
         puzzle_id = tuple[0]
         if puzzle_id in tmp:
-            tmp[puzzle_id][theme_index] = " ".join(
-                [tmp[puzzle_id][theme_index], (tuple[theme_index])]
-            )
+            tmp[puzzle_id][theme_index] = " ".join([tmp[puzzle_id][theme_index], (tuple[theme_index])])
         else:
             tmp[puzzle_id] = list(tuple)
 
