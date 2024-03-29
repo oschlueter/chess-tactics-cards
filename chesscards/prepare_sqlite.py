@@ -1,5 +1,6 @@
-import pandas as pd
 import sqlite3
+
+import pandas as pd
 
 
 def prepare_sqlite(csv_fn: str, sqlite_fn: str):

@@ -1,7 +1,7 @@
-from dateutil.tz import tzlocal, tzutc
+from datetime import datetime
 
 from card import Deck
-from datetime import datetime
+from dateutil.tz import tzlocal, tzutc
 
 
 def to_local(dt: datetime):

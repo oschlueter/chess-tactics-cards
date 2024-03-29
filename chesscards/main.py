@@ -7,8 +7,8 @@ from io import BytesIO
 import cairosvg
 import chess.svg
 import matplotlib.pyplot as plt
-from PIL import Image
 from fsrs import FSRS, Rating
+from PIL import Image
 
 from chesscards.card import Deck
 
@@ -117,7 +117,8 @@ if __name__ == "__main__":
         display(board, flip=True)
 
         updated_card = scheduling_cards[rating].card
-        deck.save_card(updated_card)
+        review_log = scheduling_cards[rating].review_log
+        deck.save_card(updated_card, review_log)
         print(
             f"it took you {time_spent.total_seconds()} seconds to solve this puzzle. it is due again at {updated_card.due}"
         )

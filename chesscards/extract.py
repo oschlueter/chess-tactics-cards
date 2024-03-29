@@ -1,5 +1,5 @@
-import sqlite3
 import csv
+import sqlite3
 
 
 def remove_duplicates(tuples):
