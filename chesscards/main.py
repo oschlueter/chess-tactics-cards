@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from fsrs import FSRS, Rating
 
-from card import ChessCard, Deck
+from chesscards.card import Deck
 
 
 def display(board: chess.Board, flip=False, lastmove: chess.Move = None):
