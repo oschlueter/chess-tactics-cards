@@ -51,9 +51,6 @@ def extract_tactics(
 
 
 if __name__ == "__main__":
-    r = 1600
-    db_fn = "lichess_db_puzzle.db"
-
     t = ["fork", "capturingDefender", "discoveredAttack", "intermezzo", "pin"]
     t.extend(["zugzwang", "mateIn2", "doubleCheck"])
     # anastasia, arabian, boden
@@ -89,4 +86,5 @@ if __name__ == "__main__":
         ]
     )
 
-    extract_tactics(db_fn, r, r + 200, 90, t, 10)
+    r = 1600
+    extract_tactics("lichess_db_puzzle.db", r, r + 200, 90, t, 10)

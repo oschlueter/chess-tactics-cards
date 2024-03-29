@@ -20,7 +20,7 @@ database:
 	poetry run python chesscards/prepare_sqlite.py
 
 extract:
-	python extract.py
+	poetry run python chesscards/extract.py
 
 deck:
 	poetry run python chesscards/prepare_deck.py
