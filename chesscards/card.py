@@ -83,6 +83,7 @@ class Deck:
         if log:
             with open(str(self.logs_path / f"{card.id}.jsonl"), "a") as f:
                 f.write(json.dumps(log.__dict__, default=str))
+                f.write("\n")
 
     def _mkdir(self):
         self.cards_path.mkdir(parents=True, exist_ok=True)

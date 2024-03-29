@@ -34,6 +34,7 @@ class TestCard:
 
         # when
         sample_deck.save_card(updated_card, review_log)
+        sample_deck.save_card(updated_card, review_log)
 
         # then
         review_log_path = Path(sample_deck.logs_path) / f"{updated_card.id}.jsonl"
@@ -60,3 +61,5 @@ class TestDeck:
         # then
         assert (decks_path / deck_name / "cards/00008.json").exists()
         assert (decks_path / deck_name / "logs/").exists()
+
+    # def test_load__sample__loads_deck_correctly(self, tmp_path):
