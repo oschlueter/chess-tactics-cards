@@ -11,6 +11,12 @@ def sql(theme: str, min_rating: int, max_rating: int, popularity: int, tactics_p
             AND tactics.rating >= {min_rating}
             AND tactics.rating < {max_rating}
             AND tactics.popularity >= {popularity}
+            AND tactics.PuzzleId NOT IN
+                (
+                    SELECT puzzleid
+                    FROM themes
+                    WHERE themes IN ('veryLong')
+                )
             LIMIT {tactics_per_motif}
         """
 
