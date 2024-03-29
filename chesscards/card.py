@@ -40,7 +40,7 @@ class ChessCard(Card):
     ):
 
         card = ChessCard(id, fen, moves, themes)
-        card.due = datetime.strptime(due, "%Y-%m-%d %H:%M:%S.%f")
+        card.due = datetime.strptime(due, "%Y-%m-%d %H:%M:%S")
         card.stability = stability
         card.difficulty = difficulty
         card.elapsed_days = elapsed_days
@@ -50,7 +50,7 @@ class ChessCard(Card):
         card.state = State(state)
 
         if last_review:
-            card.last_review = datetime.strptime(last_review, "%Y-%m-%d %H:%M:%S.%f")
+            card.last_review = datetime.strptime(last_review, "%Y-%m-%d %H:%M:%S")
 
         return card
 

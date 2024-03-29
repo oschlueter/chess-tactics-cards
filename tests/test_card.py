@@ -8,21 +8,24 @@ from fsrs import FSRS, Rating
 from chesscards.card import Deck
 
 
+# @freezegun.freeze_time()
+@pytest.fixture
+def sample_deck(tmp_path):
+    csv_fn = str(Path(__file__).resolve().parent / "data/sample.csv")
+    decks_path = tmp_path / "decks"
+    deck_name = "test-deck"
+
+    with freezegun.freeze_time("2024-01-01 12:00:00"):
+        deck = Deck.create_from_csv(deck_name, csv_fn, str(decks_path))
+
+    yield deck
+
+
 @freezegun.freeze_time("2024-01-01 12:00:00")
 class TestCard:
     def read_file(self, fn: str):
         with open(fn, "r") as f:
             return f.read()
-
-    @pytest.fixture
-    def sample_deck(self, tmp_path):
-        csv_fn = str(Path(__file__).resolve().parent / "data/sample.csv")
-        decks_path = tmp_path / "decks"
-        deck_name = "test-deck"
-
-        deck = Deck.create_from_csv(deck_name, csv_fn, str(decks_path))
-
-        yield deck
 
     def test_save_card__with_review_log__stores_card_and_review_log_correctly(self, sample_deck: Deck):
         # given
@@ -49,17 +52,26 @@ class TestCard:
 
 
 class TestDeck:
-    def test_save_deck__sample__stores_deck_correctly(self, tmp_path):
+    def test_save_deck__sample__stores_deck_correctly(self, sample_deck):
         # given
-        csv_fn = str(Path(__file__).resolve().parent / "data/sample.csv")
-        decks_path = tmp_path / "decks"
-        deck_name = "test-deck"
-
         # when
-        Deck.create_from_csv(deck_name, csv_fn, decks_dir=str(decks_path))
+        # fixture
 
         # then
-        assert (decks_path / deck_name / "cards/00008.json").exists()
-        assert (decks_path / deck_name / "logs/").exists()
+        assert (sample_deck.cards_path / '00008.json').exists()
+        assert sample_deck.logs_path.exists()
 
-    # def test_load__sample__loads_deck_correctly(self, tmp_path):
+    def test_load__sample__loads_deck_correctly(self, sample_deck, tmp_path):
+        # given
+        # fixture
+
+        # when
+        deck = Deck(sample_deck.name, parent_dir=str(tmp_path / "decks"))
+        deck.load()
+
+        # then
+        # a proper check for equality would improve this test but this is GEFN
+        assert len(deck.cards) == len(sample_deck.cards)
+        assert deck.cards[0].id == sample_deck.cards[0].id
+        assert deck.cards[0].due == sample_deck.cards[0].due
+        assert deck.cards[0].fen == sample_deck.cards[0].fen
