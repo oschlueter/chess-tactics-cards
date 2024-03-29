@@ -21,4 +21,4 @@ def test_prepare_sqlite__sample__creates_expected_sqlite(tmp_path):
 
         # Fetch all rows from the query result
         rows = cursor.fetchall()
-        assert len(rows) == 4
+        assert len(rows) == 18
