@@ -8,7 +8,9 @@ from fsrs import FSRS, Rating
 from chesscards.card import Deck
 
 
-# @freezegun.freeze_time()
+from tests.conftest import read_file
+
+
 @pytest.fixture
 def sample_deck(tmp_path):
     csv_fn = str(Path(__file__).resolve().parent / "data/sample.csv")
@@ -23,10 +25,6 @@ def sample_deck(tmp_path):
 
 @freezegun.freeze_time("2024-01-01 12:00:00")
 class TestCard:
-    def read_file(self, fn: str):
-        with open(fn, "r") as f:
-            return f.read()
-
     def test_save_card__with_review_log__stores_card_and_review_log_correctly(self, sample_deck: Deck):
         # given
         f = FSRS()
@@ -43,10 +41,10 @@ class TestCard:
         review_log_path = Path(sample_deck.logs_path) / f"{updated_card.id}.jsonl"
 
         assert review_log_path.exists(), "review log does not exist"
-        assert self.read_file(f"{sample_deck.cards_path}/{updated_card.id}.json") == self.read_file(
+        assert read_file(f"{sample_deck.cards_path}/{updated_card.id}.json") == read_file(
             str(Path(__file__).resolve().parent / "data/updated_card.json")
         )
-        assert self.read_file(f"{sample_deck.logs_path}/{updated_card.id}.jsonl") == self.read_file(
+        assert read_file(f"{sample_deck.logs_path}/{updated_card.id}.jsonl") == read_file(
             str(Path(__file__).resolve().parent / "data/review_log.jsonl")
         )
 
@@ -89,6 +87,6 @@ class TestDeck:
         # then
         # a proper check for equality would improve this test but this is GEFN
         assert len(deck.cards) == len(sample_deck.cards)
-        assert deck.cards[0].id == sample_deck.cards[0].id
-        assert deck.cards[0].due == sample_deck.cards[0].due
-        assert deck.cards[0].fen == sample_deck.cards[0].fen
+        assert set([card.id for card in deck.cards]) == set([card.id for card in sample_deck.cards])
+        assert set([card.due for card in deck.cards]) == set([card.due for card in sample_deck.cards])
+        assert set([card.fen for card in deck.cards]) == set([card.fen for card in sample_deck.cards])

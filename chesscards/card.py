@@ -108,7 +108,6 @@ class Deck:
         with open(csv_fn) as f:
             reader = csv.DictReader(f)
             tactics = [row for row in reader]
-            random.shuffle(tactics)
 
             deck = Deck(
                 deck_name,

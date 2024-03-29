@@ -1,5 +1,6 @@
 import csv
 import sqlite3
+import random
 
 
 def remove_duplicates(tuples):
@@ -12,31 +13,56 @@ def remove_duplicates(tuples):
         else:
             tmp[puzzle_id] = list(tuple)
 
-    return tmp.values()
+    return list(tmp.values())
 
 
-def sql(theme: str, min_rating: int, max_rating: int, tactics_per_motif: int):
+def sql(theme: str, min_rating: int, max_rating: int, popularity: int, tactics_per_motif: int):
     return f"""
             SELECT * FROM main.tactics 
             WHERE "Themes" IN ("{theme}") 
             AND "Rating" >= {min_rating} 
             AND "Rating" < {max_rating} 
-            AND Popularity > 90 
+            AND Popularity >= {popularity}
             LIMIT {tactics_per_motif}
         """
 
 
-if __name__ == "__main__":
-
+def extract_tactics(database_fn: str, min_rating: int, max_rating: int, popularity: int, themes: [str], tactics_per_theme: int, extract_file: str = 'extract.csv'):
     # Connect to the SQLite database
-    conn = sqlite3.connect("lichess_db_puzzle.db")
+    conn = sqlite3.connect(database_fn)
     cursor = conn.cursor()
+    rows = []
+    column_names = []
+    for theme in themes:
+        query = sql(theme, min_rating, max_rating, popularity, tactics_per_theme)
+        cursor.execute(query)
+        rows.extend(cursor.fetchall())
 
-    # Define the SQL query
-    themes = ["fork", "capturingDefender", "discoveredAttack", "intermezzo", "pin"]
-    themes.extend(["zugzwang", "mateIn2", "doubleCheck"])
+        # Get the column names (headers)
+        column_names = [description[0] for description in cursor.description]
+
+    rows = remove_duplicates(rows)
+
+    random.shuffle(rows)
+
+    # Write the headers and data to a CSV file
+    with open(extract_file, "w", newline="") as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(column_names)  # Write the headers
+        csvwriter.writerows(rows)  # Write the data
+
+    # Close the database connection
+    conn.close()
+
+
+if __name__ == "__main__":
+    r = 1600
+    db_fn = "lichess_db_puzzle.db"
+
+    t = ["fork", "capturingDefender", "discoveredAttack", "intermezzo", "pin"]
+    t.extend(["zugzwang", "mateIn2", "doubleCheck"])
     # anastasia, arabian, boden
-    themes.extend(
+    t.extend(
         [
             "anastasiaMate",
             "arabianMate",
@@ -48,8 +74,8 @@ if __name__ == "__main__":
             "hookMate",
         ]
     )
-    themes.extend(["attackingF2F7", "promotion"])
-    themes.extend(
+    t.extend(["attackingF2F7", "promotion"])
+    t.extend(
         [
             "exposedKing",
             "hangingPiece",
@@ -67,33 +93,5 @@ if __name__ == "__main__":
             "castling",
         ]
     )
-    # '" Legal's mate
-    # '" Damiano's mate ;/ Greco's mate
-    # '" Lolli's mate
-    # '" Blackburne's mate '" Pillsbury's mate
-    rating = 1600
-    print()
 
-    rows = []
-    column_names = []
-
-    for theme in themes:
-        query = sql(theme, rating, rating + 200, 10)
-
-        # Execute the query and fetch the results
-        cursor.execute(query)
-        rows.extend(cursor.fetchall())
-
-        # Get the column names (headers)
-        column_names = [description[0] for description in cursor.description]
-
-    rows = remove_duplicates(rows)
-
-    # Write the headers and data to a CSV file
-    with open("extract.csv", "w", newline="") as csvfile:
-        csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(column_names)  # Write the headers
-        csvwriter.writerows(rows)  # Write the data
-
-    # Close the database connection
-    conn.close()
+    extract_tactics(db_fn, r, r + 200, t, 10)
