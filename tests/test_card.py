@@ -50,10 +50,10 @@ class TestCard:
 
     def test_load__deck_does_not_exist__raises_value_error(self):
         # given
-        deck = Deck('foo')
+        deck = Deck("foo")
 
         # then
-        with pytest.raises(ValueError, match='does not exist'):
+        with pytest.raises(ValueError, match="does not exist"):
             # when
             deck.load()
 
@@ -73,7 +73,7 @@ class TestDeck:
         # fixture
 
         # then
-        assert (sample_deck.cards_path / '00008.json').exists()
+        assert (sample_deck.cards_path / "00008.json").exists()
         assert sample_deck.logs_path.exists()
 
     def test_load__sample__loads_deck_correctly(self, sample_deck, tmp_path):

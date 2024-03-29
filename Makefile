@@ -16,6 +16,9 @@ sample:
 	@echo "Extracting the first two lines from $(FILE_NAME) and storing to sample.csv"
 	@zstd -dc $(FILE_NAME) | head -n 2 > sample.csv
 
+database:
+	poetry run python chesscards/prepare_sqlite.py
+
 extract:
 	python extract.py
 
@@ -24,3 +27,6 @@ deck:
 
 train:
 	poetry run python chesscards/main.py
+
+due:
+	poetry run python chesscards/show_due.py

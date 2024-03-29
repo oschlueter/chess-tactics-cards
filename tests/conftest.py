@@ -11,6 +11,11 @@ def read_file(fn: str):
         return f.read()
 
 
+def read_file_lines(fn: str):
+    with open(fn, "r") as f:
+        return f.readlines()
+
+
 @pytest.fixture(autouse=True)
 def set_random_seed():
     random.seed(0)

@@ -3,31 +3,27 @@ import sqlite3
 import random
 
 
-def remove_duplicates(tuples):
-    tmp = {}
-    theme_index = 7
-    for tuple in tuples:
-        puzzle_id = tuple[0]
-        if puzzle_id in tmp:
-            tmp[puzzle_id][theme_index] = " ".join([tmp[puzzle_id][theme_index], (tuple[theme_index])])
-        else:
-            tmp[puzzle_id] = list(tuple)
-
-    return list(tmp.values())
-
-
 def sql(theme: str, min_rating: int, max_rating: int, popularity: int, tactics_per_motif: int):
     return f"""
-            SELECT * FROM main.tactics 
-            WHERE "Themes" IN ("{theme}") 
-            AND "Rating" >= {min_rating} 
-            AND "Rating" < {max_rating} 
-            AND Popularity >= {popularity}
+            SELECT tactics.* FROM tactics, themes
+            WHERE tactics.PuzzleId = themes.PuzzleId
+            AND themes.themes = '{theme}'
+            AND tactics.rating >= {min_rating}
+            AND tactics.rating < {max_rating}
+            AND tactics.popularity >= {popularity}
             LIMIT {tactics_per_motif}
         """
 
 
-def extract_tactics(database_fn: str, min_rating: int, max_rating: int, popularity: int, themes: [str], tactics_per_theme: int, extract_file: str = 'extract.csv'):
+def extract_tactics(
+    database_fn: str,
+    min_rating: int,
+    max_rating: int,
+    popularity: int,
+    themes: [str],
+    tactics_per_theme: int,
+    extract_file: str = "extract.csv",
+):
     # Connect to the SQLite database
     conn = sqlite3.connect(database_fn)
     cursor = conn.cursor()
@@ -41,8 +37,7 @@ def extract_tactics(database_fn: str, min_rating: int, max_rating: int, populari
         # Get the column names (headers)
         column_names = [description[0] for description in cursor.description]
 
-    rows = remove_duplicates(rows)
-
+    rows = list(set(rows))  # remove duplicates
     random.shuffle(rows)
 
     # Write the headers and data to a CSV file
