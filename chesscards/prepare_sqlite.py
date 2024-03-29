@@ -17,9 +17,9 @@ def prepare_sqlite(csv_fn: str, sqlite_fn: str):
     # Write DataFrame to SQLite table
     df.to_sql("tactics", conn, if_exists="replace", index=False)
 
-    # TODO create indices for
-    # themes
-    # rating
+    cursor = conn.cursor()
+    for col in ['rating', 'themes', 'popularity']:
+        cursor.execute(f"CREATE INDEX idx_{col} ON tactics({col})")
 
     # Close the connection
     conn.close()
