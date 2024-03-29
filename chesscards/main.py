@@ -23,39 +23,39 @@ def display(board: chess.Board, flip=False, lastmove: chess.Move = None):
     img = Image.open(BytesIO(img_png))
 
     plt.ion()
-    plt.axis('off')
+    plt.axis("off")
     plt.imshow(img)
     plt.show(block=False)
 
 
 def solution_san(moves: str, board: chess.Board):
-    moves_uci = moves.split(' ')[1:]
+    moves_uci = moves.split(" ")[1:]
     moves = [chess.Move.from_uci(uci) for uci in moves_uci]
-    translation_table = str.maketrans('QNBR', 'DSLT')
+    translation_table = str.maketrans("QNBR", "DSLT")
 
     return board.variation_san(moves).translate(translation_table)
 
 
 def is_variation_okay(expected_input: str, user_input: str):
-    list1 = expected_input.split(' ')
-    list2 = user_input.split(' ')
+    list1 = expected_input.split(" ")
+    list2 = user_input.split(" ")
 
     return list1[:-2] == list2[:-2] and list1[-1] == list2[-1]
 
 
 def expected_input(solution: str):
-    return re.sub(r'\d+\.\.* ?', '', solution)
+    return re.sub(r"\d+\.\.* ?", "", solution)
 
 
 def push_previous_move(moves: str, board: chess.Board):
-    move = chess.Move.from_uci(moves.split(' ')[0])
+    move = chess.Move.from_uci(moves.split(" ")[0])
     board.push(move)
 
     return move
 
 
 def push_solution(moves: str, board: chess.Board):
-    for move in moves.split(' ')[1:]:
+    for move in moves.split(" ")[1:]:
         board.push(chess.Move.from_uci(move))
 
 
@@ -68,9 +68,9 @@ def rating_by_seconds(time_spent: timedelta):
         return Rating.Hard
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # deck = Deck('top_5_1400_1600')
-    deck = Deck('selection_1600_1800')
+    deck = Deck("selection_1600_1800")
     deck.load()
     # data = extract()
     print()
@@ -91,8 +91,8 @@ if __name__ == '__main__':
         player = "White" if board.turn else "Black"
 
         display(board, lastmove=previous_move)
-        response = input(f'{player} to move: ')
-        print(f'motifs are: {card.themes}')
+        response = input(f"{player} to move: ")
+        print(f"motifs are: {card.themes}")
         solution = solution_san(card.moves, board)
         expected = expected_input(solution)
         print(solution)
@@ -108,7 +108,7 @@ if __name__ == '__main__':
             print(f"Expected response is {expected}")
             passed = input("mark as completed [yN]? ")
 
-            rating = rating_by_seconds(time_spent) if passed == 'y' else Rating.Again
+            rating = rating_by_seconds(time_spent) if passed == "y" else Rating.Again
         else:
             input(f"Try puzzle {card.id} again another time.")
             rating = Rating.Again
@@ -118,7 +118,8 @@ if __name__ == '__main__':
 
         updated_card = scheduling_cards[rating].card
         deck.save_card(updated_card)
-        print(f"it took you {time_spent.total_seconds()} seconds to solve this puzzle. it is due again at {updated_card.due}")
+        print(
+            f"it took you {time_spent.total_seconds()} seconds to solve this puzzle. it is due again at {updated_card.due}"
+        )
         input("Next?")
         print()
-

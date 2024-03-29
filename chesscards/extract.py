@@ -8,7 +8,9 @@ def remove_duplicates(tuples):
     for tuple in tuples:
         puzzle_id = tuple[0]
         if puzzle_id in tmp:
-            tmp[puzzle_id][theme_index] = " ".join([tmp[puzzle_id][theme_index], (tuple[theme_index])])
+            tmp[puzzle_id][theme_index] = " ".join(
+                [tmp[puzzle_id][theme_index], (tuple[theme_index])]
+            )
         else:
             tmp[puzzle_id] = list(tuple)
 
@@ -26,19 +28,47 @@ def sql(theme: str, min_rating: int, max_rating: int, tactics_per_motif: int):
         """
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # Connect to the SQLite database
-    conn = sqlite3.connect('lichess_db_puzzle.db')
+    conn = sqlite3.connect("lichess_db_puzzle.db")
     cursor = conn.cursor()
 
     # Define the SQL query
     themes = ["fork", "capturingDefender", "discoveredAttack", "intermezzo", "pin"]
     themes.extend(["zugzwang", "mateIn2", "doubleCheck"])
     # anastasia, arabian, boden
-    themes.extend(['anastasiaMate', 'arabianMate', 'bodenMate', 'smotheredMate', 'backRankMate', 'doubleBishopMate', 'dovetailMate', 'hookMate'])
-    themes.extend(['attackingF2F7', 'promotion'])
-    themes.extend(['exposedKing', 'hangingPiece', 'skewer', 'trappedPiece', 'attraction', 'clearance', 'defensiveMove', 'deflection', 'interference', 'quietMove', 'xRayAttack', 'trappedPiece', 'sacrifice', 'castling'])
+    themes.extend(
+        [
+            "anastasiaMate",
+            "arabianMate",
+            "bodenMate",
+            "smotheredMate",
+            "backRankMate",
+            "doubleBishopMate",
+            "dovetailMate",
+            "hookMate",
+        ]
+    )
+    themes.extend(["attackingF2F7", "promotion"])
+    themes.extend(
+        [
+            "exposedKing",
+            "hangingPiece",
+            "skewer",
+            "trappedPiece",
+            "attraction",
+            "clearance",
+            "defensiveMove",
+            "deflection",
+            "interference",
+            "quietMove",
+            "xRayAttack",
+            "trappedPiece",
+            "sacrifice",
+            "castling",
+        ]
+    )
     # '" Legal's mate
     # '" Damiano's mate ;/ Greco's mate
     # '" Lolli's mate
@@ -62,7 +92,7 @@ if __name__ == '__main__':
     rows = remove_duplicates(rows)
 
     # Write the headers and data to a CSV file
-    with open('extract.csv', 'w', newline='') as csvfile:
+    with open("extract.csv", "w", newline="") as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(column_names)  # Write the headers
         csvwriter.writerows(rows)  # Write the data

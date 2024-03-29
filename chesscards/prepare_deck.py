@@ -14,17 +14,23 @@ def read(fn: str):
 
 
 def sample():
-    return read('sample.csv')
+    return read("sample.csv")
 
 
 def extract():
-    return read('extract.csv')
+    return read("extract.csv")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     data = extract()
 
-    deck = Deck('selection_1600_1800', [
-        ChessCard(tactic['PuzzleId'], tactic['FEN'], tactic['Moves'], tactic['Themes']) for tactic in data
-    ])
+    deck = Deck(
+        "selection_1600_1800",
+        [
+            ChessCard(
+                tactic["PuzzleId"], tactic["FEN"], tactic["Moves"], tactic["Themes"]
+            )
+            for tactic in data
+        ],
+    )
     deck.save_deck()

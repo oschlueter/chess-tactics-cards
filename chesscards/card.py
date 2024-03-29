@@ -20,11 +20,24 @@ class ChessCard(Card):
         self.themes = themes
 
     @staticmethod
-    def from_dict(id: str, fen: str, moves: str, themes: str, due: str, stability: float, difficulty: float,
-                  elapsed_days: int, scheduled_days: int, reps: int, lapses: int, state: State, last_review: datetime = None):
+    def from_dict(
+        id: str,
+        fen: str,
+        moves: str,
+        themes: str,
+        due: str,
+        stability: float,
+        difficulty: float,
+        elapsed_days: int,
+        scheduled_days: int,
+        reps: int,
+        lapses: int,
+        state: State,
+        last_review: datetime = None,
+    ):
 
         card = ChessCard(id, fen, moves, themes)
-        card.due = datetime.strptime(due, '%Y-%m-%d %H:%M:%S.%f')
+        card.due = datetime.strptime(due, "%Y-%m-%d %H:%M:%S.%f")
         card.stability = stability
         card.difficulty = difficulty
         card.elapsed_days = elapsed_days
@@ -34,7 +47,7 @@ class ChessCard(Card):
         card.state = State(state)
 
         if last_review:
-            card.last_review = datetime.strptime(last_review, '%Y-%m-%d %H:%M:%S.%f')
+            card.last_review = datetime.strptime(last_review, "%Y-%m-%d %H:%M:%S.%f")
 
         return card
 
@@ -50,7 +63,7 @@ class Deck:
         self.name = name
         self.cards = cards
 
-        self.deck_path = Path(f'decks/{self.name}')
+        self.deck_path = Path(f"decks/{self.name}")
 
     def save_deck(self):
         self.deck_path.mkdir(exist_ok=True)
@@ -59,7 +72,7 @@ class Deck:
             self.save_card(card)
 
     def save_card(self, card: ChessCard):
-        with open(str(self.deck_path / f'{card.id}.json'), 'w') as f:
+        with open(str(self.deck_path / f"{card.id}.json"), "w") as f:
             f.write(json.dumps(card.__dict__, default=str, indent=4))
 
     def _mkdir(self):
@@ -73,7 +86,7 @@ class Deck:
             raise ValueError(f"deck {self.name} does not exist!")
 
         for x in self.deck_path.iterdir():
-            if x.is_file() and x.suffix == '.json':
+            if x.is_file() and x.suffix == ".json":
                 with x.open() as f:
                     data = json.load(f)
                     self.cards.append(ChessCard.from_dict(**data))
@@ -85,4 +98,3 @@ class Deck:
 
     def not_due(self):
         return [card for card in self.cards if card.due > datetime.utcnow()]
-
