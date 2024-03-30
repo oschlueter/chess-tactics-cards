@@ -36,3 +36,8 @@ due:
 
 fen:
 	open "https://lichess.org/analysis/standard/$$(jq -r .fen  decks/${DECK}/cards/${id}.json | sed 's/ /_/g')"
+
+push:
+	cd decks
+	git commit -am "practice"
+	git push
