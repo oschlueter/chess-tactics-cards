@@ -1,6 +1,9 @@
 FILE_NAME := lichess_db_puzzle.csv.zst
 URL := https://database.lichess.org/$(FILE_NAME)
 
+# TODO pass deck variable to python commands to not have to configure deck in multiple py files
+DECK := selection_1600_1800
+
 .PHONY: download extract_lines
 download: $(FILE_NAME)
 
@@ -30,3 +33,6 @@ train:
 
 due:
 	poetry run python chesscards/show_due.py
+
+fen:
+	open "https://lichess.org/analysis/standard/$$(jq -r .fen  decks/${DECK}/cards/${id}.json | sed 's/ /_/g')"
