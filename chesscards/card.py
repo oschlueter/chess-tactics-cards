@@ -1,4 +1,5 @@
 import csv
+import itertools
 import json
 import random
 from datetime import datetime
@@ -99,6 +100,20 @@ class Deck:
 
     def due(self):
         return [card for card in self.cards if card.due < datetime.utcnow()]
+
+    def due_shuffle(self):
+        due_cards = self.due()
+
+        # Sort due_cards by due date
+        due_cards.sort(key=lambda card: card.due.date())
+
+        result = []
+        # Group cards by due date and shuffle each group
+        for cards in (random.sample(cards, len(cards)) for cards in
+                      (list(group) for date, group in itertools.groupby(due_cards, key=lambda card: card.due.date()))):
+            result.extend(cards)
+
+        return result
 
     def not_due(self):
         return [card for card in self.cards if card.due > datetime.utcnow()]

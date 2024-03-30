@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # deck = Deck('top_5_1400_1600')
     deck.load()
 
-    due = deck.due()
+    due = deck.due_shuffle()
     print(f"{len(due)} tactics are due for repetition:")
     for tactic in due:
         print(f"{to_local(tactic.due)} {tactic.id}")
