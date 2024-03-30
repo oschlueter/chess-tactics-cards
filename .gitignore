@@ -5,6 +5,7 @@
 *.db
 *.csv
 *.zst
+decks/
 
 !tests/data/*.csv
 
