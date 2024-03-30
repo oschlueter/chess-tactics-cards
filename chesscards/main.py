@@ -101,15 +101,12 @@ if __name__ == "__main__":
         if response.startswith(expected):
             print(f"You solved puzzle {card.id}!")
             rating = rating_by_seconds(time_spent)
-        elif is_variation_okay(expected, response):
-            print(f"Your response was {response}")
+        else:
+            print(f"Your response was    {response}")
             print(f"Expected response is {expected}")
-            passed = input("mark as completed [yN]? ")
+            passed = input(f"mark puzzle {card.id} as completed [yN]? ")
 
             rating = rating_by_seconds(time_spent) if passed == "y" else Rating.Again
-        else:
-            input(f"Try puzzle {card.id} again another time.")
-            rating = Rating.Again
 
         push_solution(card.moves, board)
         display(board, flip=True)
