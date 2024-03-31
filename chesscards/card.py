@@ -80,7 +80,7 @@ class ChessCard(Card):
     def exercise_svg(self):
         board = self.board()
 
-        return chess.svg.board(flipped=board.turn, board=board)
+        return chess.svg.board(flipped=not board.turn, board=board)
 
     def solution_svg(self):
         board = self.board()
