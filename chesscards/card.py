@@ -126,8 +126,10 @@ class Deck:
 
         result = []
         # Group cards by due date and shuffle each group
-        for cards in (random.sample(cards, len(cards)) for cards in
-                      (list(group) for date, group in itertools.groupby(due_cards, key=lambda card: card.due.date()))):
+        for cards in (
+            random.sample(cards, len(cards))
+            for cards in (list(group) for date, group in itertools.groupby(due_cards, key=lambda card: card.due.date()))
+        ):
             result.extend(cards)
 
         return result

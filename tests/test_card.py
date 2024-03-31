@@ -65,11 +65,10 @@ class TestCard:
     def test_not_due__scenario__result(self):
         pass
 
-    @pytest.mark.parametrize("filename, clazz", [
-        ("updated_card.json", LiChessCard),
-        ("legacy_card.json", LiChessCard),
-        ("book_card.json", BookChessCard)
-    ])
+    @pytest.mark.parametrize(
+        "filename, clazz",
+        [("updated_card.json", LiChessCard), ("legacy_card.json", LiChessCard), ("book_card.json", BookChessCard)],
+    )
     def test_load__lichess_dict__returns_lichess_card(self, filename, clazz):
         # given
         data = json.loads(read_file(str(Path(__file__).resolve().parent / f"data/{filename}")))
@@ -84,7 +83,7 @@ class TestCard:
     def test_load__invalid_source__raises_value_error(self, source):
         # given
         data = json.loads(read_file(str(Path(__file__).resolve().parent / f"data/updated_card.json")))
-        data['source'] = source
+        data["source"] = source
 
         # then
         with pytest.raises(ValueError, match="Cannot create ChessCard with source type"):
