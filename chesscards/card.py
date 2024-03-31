@@ -5,6 +5,8 @@ import random
 from datetime import datetime
 from pathlib import Path
 
+import chess
+import chess.svg
 from fsrs import Card, State
 from fsrs.models import ReviewLog
 
@@ -64,13 +66,53 @@ class ChessCard(Card):
 
         return card
 
+    def solution_san(self):
+        board = self.board()
+        moves_uci = self._moves()
+        moves = [chess.Move.from_uci(uci) for uci in moves_uci]
+        translation_table = str.maketrans("QNBR", "DSLT")
+
+        return board.variation_san(moves).translate(translation_table)
+
+    def _moves(self):
+        return self.moves.split(" ")
+
+    def exercise_svg(self):
+        board = self.board()
+
+        return chess.svg.board(flipped=board.turn, board=board)
+
+    def solution_svg(self):
+        board = self.board()
+        for move in self._moves():
+            board.push(chess.Move.from_uci(move))
+
+        return chess.svg.board(flipped=board.turn, board=board)
+
+    def board(self):
+        return chess.Board(self.fen)
+
 
 class LiChessCard(ChessCard):
-    pass
+    def _moves(self):
+        return super()._moves()[1:]
+
+    def board(self):
+        board = super().board()
+        move = chess.Move.from_uci(self.moves.split(" ")[0])
+        board.push(move)
+
+        return board
+
+    def exercise_svg(self):
+        board = self.board()
+        lastmove = chess.Move.from_uci(self.moves.split(" ")[0])
+
+        return chess.svg.board(flipped=not board.turn, board=board, lastmove=lastmove)
 
 
 class BookChessCard(ChessCard):
-    pass
+   pass
 
 
 class Deck:

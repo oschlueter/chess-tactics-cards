@@ -11,12 +11,7 @@ from PIL import Image
 from chesscards.card import Deck
 
 
-def display(board: chess.Board, flip=False, lastmove: chess.Move = None):
-    # display 'not board.turn' when showing the exercise
-    # display 'board.turn' when showing the solution
-    turn = board.turn if flip else not board.turn
-    svg = chess.svg.board(flipped=turn, board=board, lastmove=lastmove)
-
+def display_svg(svg: str):
     img_png = cairosvg.svg2png(svg)
     img = Image.open(BytesIO(img_png))
 
@@ -26,35 +21,8 @@ def display(board: chess.Board, flip=False, lastmove: chess.Move = None):
     plt.show(block=False)
 
 
-def solution_san(moves: str, board: chess.Board):
-    moves_uci = moves.split(" ")[1:]
-    moves = [chess.Move.from_uci(uci) for uci in moves_uci]
-    translation_table = str.maketrans("QNBR", "DSLT")
-
-    return board.variation_san(moves).translate(translation_table)
-
-
-def is_variation_okay(expected_input: str, user_input: str):
-    list1 = expected_input.split(" ")
-    list2 = user_input.split(" ")
-
-    return list1[:-2] == list2[:-2] and list1[-1] == list2[-1]
-
-
 def expected_input(solution: str):
     return re.sub(r"\d+\.\.* ?", "", solution)
-
-
-def push_previous_move(moves: str, board: chess.Board):
-    move = chess.Move.from_uci(moves.split(" ")[0])
-    board.push(move)
-
-    return move
-
-
-def push_solution(moves: str, board: chess.Board):
-    for move in moves.split(" ")[1:]:
-        board.push(chess.Move.from_uci(move))
 
 
 def rating_by_seconds(time_spent: timedelta):
@@ -79,19 +47,16 @@ if __name__ == "__main__":
     print(f"{len(due)} tactics are due for repetition\n")
 
     for card in due:
-        # card = ChessCard(tactic['FEN'], tactic['Moves'], tactic['Themes'])
-
         before = datetime.utcnow()
         scheduling_cards = f.repeat(card, before)
 
-        board = chess.Board(card.fen)
-        previous_move = push_previous_move(card.moves, board)
+        board = card.board()
         player = "White" if board.turn else "Black"
 
-        display(board, lastmove=previous_move)
+        display_svg(card.exercise_svg())
         response = input(f"{player} to move: ")
         print(f"motifs are: {card.themes}")
-        solution = solution_san(card.moves, board)
+        solution = card.solution_san()
         expected = expected_input(solution)
         print(solution)
 
@@ -108,8 +73,7 @@ if __name__ == "__main__":
 
             rating = rating_by_seconds(time_spent) if passed == "y" else Rating.Again
 
-        push_solution(card.moves, board)
-        display(board, flip=True)
+        display_svg(card.solution_svg())
 
         updated_card = scheduling_cards[rating].card
         review_log = scheduling_cards[rating].review_log
