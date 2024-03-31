@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from pathlib import Path
 
@@ -5,8 +6,7 @@ import freezegun
 import pytest
 from fsrs import FSRS, Rating
 
-from chesscards.card import Deck
-
+from chesscards.card import Deck, ChessCard, LiChessCard, BookChessCard
 
 from tests.conftest import read_file
 
@@ -64,6 +64,21 @@ class TestCard:
     @pytest.mark.skip(reason="will implement this later")
     def test_not_due__scenario__result(self):
         pass
+
+    @pytest.mark.parametrize("filename, clazz", [
+        ("updated_card.json", LiChessCard),
+        ("legacy_card.json", LiChessCard),
+        ("book_card.json", BookChessCard)
+    ])
+    def test_load__lichess_dict__returns_lichess_card(self, filename, clazz):
+        # given
+        data = json.loads(read_file(str(Path(__file__).resolve().parent / f"data/{filename}")))
+
+        # when
+        card = ChessCard.from_dict(**data)
+
+        # then
+        assert isinstance(card, clazz)
 
 
 class TestDeck:

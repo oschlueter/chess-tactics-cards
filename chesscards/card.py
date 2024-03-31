@@ -14,14 +14,16 @@ class ChessCard(Card):
     fen: str
     moves: str
     themes: str
+    source: str
 
-    def __init__(self, id: str, fen: str, moves: str, themes: str):
+    def __init__(self, id: str, fen: str, moves: str, themes: str, source: str = "lichess"):
         super().__init__()
 
         self.id = id
         self.fen = fen
         self.moves = moves
         self.themes = themes
+        self.source = source
 
     @staticmethod
     def from_dict(
@@ -38,9 +40,16 @@ class ChessCard(Card):
         lapses: int,
         state: State,
         last_review: datetime = None,
+        source: str = "lichess",
     ):
 
-        card = ChessCard(id, fen, moves, themes)
+        if not source or source == "lichess":
+            card = LiChessCard(id, fen, moves, themes)
+        elif source == "book":
+            card = BookChessCard(id, fen, moves, themes, source)
+        else:
+            raise ValueError(f"Cannot create ChessCard with source type '{source}'!")
+
         card.due = datetime.strptime(due, "%Y-%m-%d %H:%M:%S.%f")
         card.stability = stability
         card.difficulty = difficulty
@@ -54,6 +63,14 @@ class ChessCard(Card):
             card.last_review = datetime.strptime(last_review, "%Y-%m-%d %H:%M:%S.%f")
 
         return card
+
+
+class LiChessCard(ChessCard):
+    pass
+
+
+class BookChessCard(ChessCard):
+    pass
 
 
 class Deck:
