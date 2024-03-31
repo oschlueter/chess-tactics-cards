@@ -80,6 +80,17 @@ class TestCard:
         # then
         assert isinstance(card, clazz)
 
+    @pytest.mark.parametrize("source", ["foo", "bar"])
+    def test_load__invalid_source__raises_value_error(self, source):
+        # given
+        data = json.loads(read_file(str(Path(__file__).resolve().parent / f"data/updated_card.json")))
+        data['source'] = source
+
+        # then
+        with pytest.raises(ValueError, match="Cannot create ChessCard with source type"):
+            # when
+            ChessCard.from_dict(**data)
+
 
 class TestDeck:
     def test_save_deck__sample__stores_deck_correctly(self, sample_deck):
