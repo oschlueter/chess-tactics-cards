@@ -23,14 +23,16 @@ if __name__ == "__main__":
     # deck = Deck('top_5_1400_1600')
     deck.load()
 
-    due = deck.due()
+    # due = deck.due()
+    due = deck.due_until_end_of_day()
 
     # Now, 'date_counts' is a dictionary where the keys are the dates and the values are the counts
     print(f"{len(due)} tactics are due for repetition:")
     for date, count in per_date(due):
         print(f"Date: {date}, Count: {count}")
 
-    not_due = deck.not_due()
+    # not_due = deck.not_due()
+    not_due = deck.due_after_end_of_day()
 
     print(f"{len(not_due)} tactics are not due for repetition until:")
     for date, count in per_date(not_due):

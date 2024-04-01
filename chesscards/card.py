@@ -112,7 +112,7 @@ class LiChessCard(ChessCard):
 
 
 class BookChessCard(ChessCard):
-   pass
+    pass
 
 
 class Deck:
@@ -157,20 +157,25 @@ class Deck:
 
         self.cards.sort(key=lambda card: card.due)
 
+    def due_until_end_of_day(self):
+        return [card for card in self.cards if card.due.date() <= datetime.utcnow().date()]
+
+    def due_after_end_of_day(self):
+        return [card for card in self.cards if card.due.date() > datetime.utcnow().date()]
+
     def due(self):
         return [card for card in self.cards if card.due < datetime.utcnow()]
 
-    def due_shuffle(self):
-        due_cards = self.due()
-
+    @staticmethod
+    def shuffle(cards: [ChessCard]):
         # Sort due_cards by due date
-        due_cards.sort(key=lambda card: card.due.date())
+        cards.sort(key=lambda card: card.due.date())
 
         result = []
         # Group cards by due date and shuffle each group
         for cards in (
             random.sample(cards, len(cards))
-            for cards in (list(group) for date, group in itertools.groupby(due_cards, key=lambda card: card.due.date()))
+            for cards in (list(group) for date, group in itertools.groupby(cards, key=lambda card: card.due.date()))
         ):
             result.extend(cards)
 

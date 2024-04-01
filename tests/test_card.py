@@ -91,10 +91,13 @@ class TestCard:
             ChessCard.from_dict(**data)
 
     @pytest.mark.skip(reason="TODO: figure out how to assert if board is correct")
-    @pytest.mark.parametrize("filename, result", [
-        ("updated_card.json", "first move played"),
-        ("book_card.json", "no move played"),
-    ])
+    @pytest.mark.parametrize(
+        "filename, result",
+        [
+            ("updated_card.json", "first move played"),
+            ("book_card.json", "no move played"),
+        ],
+    )
     def test_board__different_scenarios__returns_correct_board(self, filename, result):
         # given
         data = json.loads(read_file(str(Path(__file__).resolve().parent / f"data/{filename}")))
@@ -107,10 +110,13 @@ class TestCard:
         assert board == result
         assert False
 
-    @pytest.mark.parametrize("filename, result", [
-        ("updated_card.json", "25. Txe7 Db1+ 26. Sc1 Dxc1+ 27. Dxc1"),
-        ("book_card.json", "24...Lxg3 25. Txe7 Db1+ 26. Sc1 Dxc1+ 27. Dxc1"),
-    ])
+    @pytest.mark.parametrize(
+        "filename, result",
+        [
+            ("updated_card.json", "25. Txe7 Db1+ 26. Sc1 Dxc1+ 27. Dxc1"),
+            ("book_card.json", "24...Lxg3 25. Txe7 Db1+ 26. Sc1 Dxc1+ 27. Dxc1"),
+        ],
+    )
     def test_solution_san__different_scenarios__returns_correct_solution(self, filename, result):
         # given
         data = json.loads(read_file(str(Path(__file__).resolve().parent / f"data/{filename}")))

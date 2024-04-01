@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print()
 
     f = FSRS()
-    due = deck.due_shuffle()
+    due = Deck.shuffle(deck.due_until_end_of_day())
 
     print(f"{len(due)} tactics are due for repetition\n")
 
