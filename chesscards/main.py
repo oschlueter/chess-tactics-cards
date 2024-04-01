@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from fsrs import FSRS, Rating
 from PIL import Image
 
-from chesscards.card import Deck
+from chesscards.card import Deck, MyReviewLog
 
 
 def display_svg(svg: str):
@@ -25,10 +25,10 @@ def expected_input(solution: str):
     return re.sub(r"\d+\.\.* ?", "", solution)
 
 
-def rating_by_seconds(time_spent: timedelta):
-    if time_spent.total_seconds() < 30:
+def rating_by_seconds(time_spent: int):
+    if time_spent < 30:
         return Rating.Easy
-    elif time_spent.total_seconds() < 60:
+    elif time_spent < 60:
         return Rating.Good
     else:
         return Rating.Hard
@@ -42,7 +42,8 @@ if __name__ == "__main__":
     print()
 
     f = FSRS()
-    due = Deck.shuffle(deck.due_until_end_of_day())
+    due = Deck.shuffle(deck.not_due())
+    # due = Deck.shuffle(deck.due_until_end_of_day())
 
     print(f"{len(due)} tactics are due for repetition\n")
 
@@ -60,7 +61,7 @@ if __name__ == "__main__":
         expected = expected_input(solution)
         print(solution)
 
-        time_spent = datetime.utcnow() - before
+        time_spent = int((datetime.utcnow() - before).total_seconds())
 
         # it's fine to answer more moves than expected
         if response.startswith(expected):
@@ -76,10 +77,10 @@ if __name__ == "__main__":
         display_svg(card.solution_svg())
 
         updated_card = scheduling_cards[rating].card
-        review_log = scheduling_cards[rating].review_log
+        review_log = MyReviewLog.from_log(scheduling_cards[rating].review_log, time_spent)
         deck.save_card(updated_card, review_log)
         print(
-            f"it took you {time_spent.total_seconds()} seconds to solve this puzzle. it is due again at {updated_card.due}"
+            f"it took you {time_spent} seconds to solve this puzzle. it is due again at {updated_card.due}"
         )
         input("Next?")
         print()
