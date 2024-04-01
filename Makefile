@@ -42,3 +42,6 @@ push:
 
 pull:
 	cd decks && git pull
+
+revlog:
+	poetry run python chesscards/create_revlog.py
