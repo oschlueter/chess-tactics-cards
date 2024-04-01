@@ -58,6 +58,8 @@ def extract_tactics(
 
 if __name__ == "__main__":
     t = ["fork", "capturingDefender", "discoveredAttack", "intermezzo", "pin"]
+    t.extend(['skewer', 'interference'])
+
     t.extend(["zugzwang", "mateIn2", "doubleCheck"])
     # anastasia, arabian, boden
     t.extend(
@@ -77,13 +79,11 @@ if __name__ == "__main__":
         [
             "exposedKing",
             "hangingPiece",
-            "skewer",
             "trappedPiece",
             "attraction",
             "clearance",
             "defensiveMove",
             "deflection",
-            "interference",
             "quietMove",
             "xRayAttack",
             "trappedPiece",
