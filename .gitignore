@@ -6,6 +6,7 @@
 *.csv
 *.zst
 decks/
+optimise/
 
 !tests/data/*.csv
 
