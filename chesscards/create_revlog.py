@@ -15,12 +15,14 @@ def create_revlog(deck_name, outfile, parent_dir='decks'):
                     entry['card_id'] = x.name[:-6]
                     dt = datetime.strptime(entry['review'], '%Y-%m-%d %H:%M:%S.%f')
 
-                    revlog.append({
-                        'card_id': x.name[:-6],
-                        'review_time': int(dt.timestamp() * 1000),
-                        'review_rating': entry['rating'],
-                        'review_state': entry['state']
-                    })
+                    if 'duration' in entry:  # skip old entries w/o duration
+                        revlog.append({
+                            'card_id': x.name[:-6],
+                            'review_time': int(dt.timestamp() * 1000),
+                            'review_rating': entry['rating'],
+                            'review_state': entry['state'],
+                            'review_duration': int(entry['duration'] * 1000)
+                        })
 
     revlog.sort(key=lambda entry: entry['review_time'])
 
