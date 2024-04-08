@@ -34,19 +34,12 @@ def rating_by_seconds(time_spent: int):
         return Rating.Hard
 
 
-if __name__ == "__main__":
-    # deck = Deck('top_5_1400_1600')
-    deck = Deck("selection_1600_1800")
-    deck.load()
+def train(deck: Deck):
     # data = extract()
-    print()
-
     f = FSRS()
     # due = Deck.shuffle(deck.not_due())
     due = Deck.shuffle(deck.due_until_end_of_day())
-
     print(f"{len(due)} tactics are due for repetition\n")
-
     for card in due:
         before = datetime.utcnow()
         scheduling_cards = f.repeat(card, before)
@@ -79,8 +72,17 @@ if __name__ == "__main__":
         updated_card = scheduling_cards[rating].card
         review_log = MyReviewLog.from_log(scheduling_cards[rating].review_log, time_spent)
         deck.save_card(updated_card, review_log)
-        print(
-            f"it took you {time_spent} seconds to solve this puzzle. it is due again at {updated_card.due}"
-        )
-        input("Next?")
+        print(f"it took you {time_spent} seconds to solve this puzzle. it is due again at {updated_card.due}")
+
+        keep_going = input("Next [Yn]?")
+        if keep_going == "n":
+            break
         print()
+
+
+if __name__ == "__main__":
+    # d = Deck("top_5_1400_1600")
+    d = Deck("selection_1600_1800")
+    d.load()
+
+    train(d)

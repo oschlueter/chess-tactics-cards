@@ -211,18 +211,13 @@ class Deck:
 class MyReviewLog(ReviewLog):
     duration: int
 
-    def __init__(self, rating: int, scheduled_days: int, elapsed_days: int, review: datetime, state: int, duration: int):
+    def __init__(
+        self, rating: int, scheduled_days: int, elapsed_days: int, review: datetime, state: int, duration: int
+    ):
         super().__init__(rating, scheduled_days, elapsed_days, review, state)
 
         self.duration = duration
 
     @staticmethod
     def from_log(log: ReviewLog, duration: int):
-        return MyReviewLog(
-            log.rating,
-            log.scheduled_days,
-            log.elapsed_days,
-            log.review,
-            log.state,
-            duration
-        )
+        return MyReviewLog(log.rating, log.scheduled_days, log.elapsed_days, log.review, log.state, duration)

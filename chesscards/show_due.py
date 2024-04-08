@@ -1,12 +1,6 @@
 from collections import Counter
-from datetime import datetime
 
-from card import Deck, ChessCard
-from dateutil.tz import tzlocal, tzutc
-
-
-def to_local(dt: datetime):
-    return dt.replace(tzinfo=tzutc()).astimezone(tzlocal())
+from chesscards.card import Deck, ChessCard
 
 
 def per_date(cards: [ChessCard]):
@@ -18,22 +12,16 @@ def per_date(cards: [ChessCard]):
     return Counter(dates).items()
 
 
+def show(cards: [ChessCard], due: str = "due"):
+    print(f"{len(cards)} tactics are {due} for repetition:")
+    for date, count in per_date(cards):
+        print(f"Date: {date}, Count: {count}")
+
+
 if __name__ == "__main__":
-    deck = Deck("selection_1600_1800")
-    # deck = Deck('top_5_1400_1600')
-    deck.load()
+    d = Deck("selection_1600_1800")
+    # d = Deck('top_5_1400_1600')
+    d.load()
 
-    # due = deck.due()
-    due = deck.due_until_end_of_day()
-
-    # Now, 'date_counts' is a dictionary where the keys are the dates and the values are the counts
-    print(f"{len(due)} tactics are due for repetition:")
-    for date, count in per_date(due):
-        print(f"Date: {date}, Count: {count}")
-
-    # not_due = deck.not_due()
-    not_due = deck.due_after_end_of_day()
-
-    print(f"{len(not_due)} tactics are not due for repetition until:")
-    for date, count in per_date(not_due):
-        print(f"Date: {date}, Count: {count}")
+    show(d.due_until_end_of_day(), "due")
+    show(d.due_after_end_of_day(), "not due")
