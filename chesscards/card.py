@@ -185,7 +185,7 @@ class Deck:
         return [card for card in self.cards if card.due > datetime.utcnow()]
 
     @staticmethod
-    def create_from_csv(deck_name: str, csv_fn: str, decks_dir: str = "decks"):
+    def create_from_csv(deck_name: str, csv_fn: str, decks_dir: str = "decks", source="lichess"):
         with open(csv_fn) as f:
             reader = csv.DictReader(f)
             tactics = [row for row in reader]
@@ -198,6 +198,7 @@ class Deck:
                         tactic["FEN"],
                         tactic["Moves"],
                         tactic["Themes"],
+                        source=source
                     )
                     for tactic in tactics
                 ],
