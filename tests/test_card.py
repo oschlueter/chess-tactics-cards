@@ -128,6 +128,17 @@ class TestCard:
         # then
         assert moves == result
 
+    def test_solution_san__invalid_move__includes_id_in_error(self):
+        # given
+        data = json.loads(read_file(str(Path(__file__).resolve().parent / f"data/book_card.json")))
+        card = ChessCard.from_dict(**data)
+        card.moves = card.moves[:-1] + "2"
+
+        # then
+        with pytest.raises(ValueError, match=card.id):
+            # when
+            card.solution_san()
+
 
 class TestDeck:
     def test_save_deck__sample__stores_deck_correctly(self, sample_deck):

@@ -72,7 +72,11 @@ class ChessCard(Card):
         moves = [chess.Move.from_uci(uci) for uci in moves_uci]
         translation_table = str.maketrans("QNBR", "DSLT")
 
-        return board.variation_san(moves).translate(translation_table)
+        try:
+            return board.variation_san(moves).translate(translation_table)
+        except chess.IllegalMoveError as e:
+            # include card ID in error message so I can quickly find and fix the erroneous move
+            raise ValueError(f"invalid move in card {self.id}: {e}") from e
 
     def _moves(self):
         return self.moves.split(" ")
@@ -193,13 +197,7 @@ class Deck:
             deck = Deck(
                 deck_name,
                 [
-                    ChessCard(
-                        tactic["PuzzleId"],
-                        tactic["FEN"],
-                        tactic["Moves"],
-                        tactic["Themes"],
-                        source=source
-                    )
+                    ChessCard(tactic["PuzzleId"], tactic["FEN"], tactic["Moves"], tactic["Themes"], source=source)
                     for tactic in tactics
                 ],
                 decks_dir,
