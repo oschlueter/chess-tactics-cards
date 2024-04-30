@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 from io import BytesIO
 
 import cairosvg
@@ -41,7 +41,7 @@ def train(deck: Deck):
     due = Deck.shuffle(deck.due_until_end_of_day())
     print(f"{len(due)} tactics are due for repetition\n")
     for card in due:
-        before = datetime.utcnow()
+        before = datetime.now(UTC)
         scheduling_cards = f.repeat(card, before)
 
         board = card.board()
@@ -54,7 +54,7 @@ def train(deck: Deck):
         expected = expected_input(solution)
         print(solution)
 
-        time_spent = int((datetime.utcnow() - before).total_seconds())
+        time_spent = int((datetime.now(UTC) - before).total_seconds())
 
         # it's fine to answer more moves than expected
         if response.startswith(expected):
