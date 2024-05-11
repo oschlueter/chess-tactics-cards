@@ -5,6 +5,7 @@ import random
 from datetime import datetime, UTC
 from pathlib import Path
 
+import cairosvg
 import chess
 import chess.svg
 from fsrs import Card, State
@@ -186,7 +187,7 @@ class Deck:
         return result
 
     def not_due(self):
-        return [card for card in self.cards if card.due > datetime.utcnow()]
+        return [card for card in self.cards if card.due > datetime.now(UTC)]
 
     @staticmethod
     def create_from_csv(deck_name: str, csv_fn: str, decks_dir: str = "decks", source="lichess"):
@@ -194,16 +195,52 @@ class Deck:
             reader = csv.DictReader(f)
             tactics = [row for row in reader]
 
+            if source == "lichess":
+                card_type = LiChessCard
+            else:
+                card_type = ChessCard
+
             deck = Deck(
                 deck_name,
                 [
-                    ChessCard(tactic["PuzzleId"], tactic["FEN"], tactic["Moves"], tactic["Themes"], source=source)
+                    card_type(tactic["PuzzleId"], tactic["FEN"], tactic["Moves"], tactic["Themes"], source=source)
                     for tactic in tactics
                 ],
                 decks_dir,
             )
 
             return deck
+
+    def anki_export(self, export_path="anki"):
+        anki_path = Path(export_path)
+        anki_path.mkdir(parents=True, exist_ok=True)
+
+        with open(f"{export_path}/deck.txt", "w") as f:
+
+            f.writelines([
+                "#separator:tab\n",
+                "#html:true\n",
+                "#tags column:3\n"
+            ])
+
+            for card in self.shuffle(self.cards):
+                exercise_png = f"{card.id}_e.png"
+                solution_png = f"{card.id}_s.png"
+
+                self.save_png(card.exercise_svg(), f"{export_path}/{exercise_png}")
+                self.save_png(card.solution_svg(), f"{export_path}/{solution_png}")
+
+                am_zug = "Weiß" if card.board().turn else "Schwarz"
+                am_zug = f"{am_zug} am Zug"
+
+                f.write(f'"<img src=""{exercise_png}""><br>{am_zug}"\t"<img src=""{solution_png}""><br>{card.solution_san()}"\t{card.themes}\n')
+
+    @staticmethod
+    def save_png(svg: str, file_name: str):
+        png = cairosvg.svg2png(svg)
+
+        with open(file_name, 'wb') as f:
+            f.write(png)
 
 
 class MyReviewLog(ReviewLog):

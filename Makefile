@@ -45,3 +45,7 @@ pull:
 
 revlog:
 	poetry run python chesscards/create_revlog.py
+
+anki:
+	poetry run python chesscards/prepare_anki_deck.py
+	cp anki_export/*png "/Users/oschlueter/Library/Application Support/Anki2/Olli/collection.media/"

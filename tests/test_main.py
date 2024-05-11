@@ -37,7 +37,7 @@ def mock_input(prompt):
     "user_input",
     [
         ["e4", "n", "n"],
-        ["Tf7 Te5+ Kf1 Txe6", "y"],
+        ["Te5+ Kf1 Txe6", "y"],
     ],
 )
 def test_train__sample__does_not_raise_error(tmp_path, user_input):

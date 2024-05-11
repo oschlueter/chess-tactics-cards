@@ -165,3 +165,22 @@ class TestDeck:
         assert set([card.id for card in deck.cards]) == set([card.id for card in sample_deck.cards])
         assert set([card.due for card in deck.cards]) == set([card.due for card in sample_deck.cards])
         assert set([card.fen for card in deck.cards]) == set([card.fen for card in sample_deck.cards])
+
+    @pytest.mark.skip(reason="will implement this later")
+    def test_anki_export__sample__exports_deck_correctly(self, sample_deck, tmp_path):
+        # given
+        # fixture
+        p = Path("anki_test")
+        p.mkdir(parents=True, exist_ok=True)
+
+        # when
+        sample_deck.anki_export(tmp_path)
+        # sample_deck.anki_export(p)  # TODO use tmp_path instead
+
+        # then
+        # exercise images exist
+
+        # solution images exist
+
+        # text file exists
+        print()

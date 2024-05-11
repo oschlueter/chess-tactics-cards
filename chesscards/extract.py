@@ -59,38 +59,44 @@ def extract_tactics(
 if __name__ == "__main__":
     t = ["fork", "capturingDefender", "discoveredAttack", "intermezzo", "pin"]
     t.extend(["skewer", "interference"])
-
     t.extend(["zugzwang", "mateIn2", "doubleCheck"])
-    # anastasia, arabian, boden
-    t.extend(
-        [
-            "anastasiaMate",
-            "arabianMate",
-            "bodenMate",
-            "smotheredMate",
-            "backRankMate",
-            "doubleBishopMate",
-            "dovetailMate",
-            "hookMate",
-        ]
-    )
-    t.extend(["attackingF2F7", "promotion"])
-    t.extend(
-        [
-            "exposedKing",
-            "hangingPiece",
-            "trappedPiece",
-            "attraction",
-            "clearance",
-            "defensiveMove",
-            "deflection",
-            "quietMove",
-            "xRayAttack",
-            "trappedPiece",
-            "sacrifice",
-            "castling",
-        ]
-    )
 
-    r = 1600
-    extract_tactics("lichess_db_puzzle.db", r, r + 200, 90, t, 10)
+    # anastasia, arabian, boden
+    # t.extend(
+    #     [
+    #         "anastasiaMate",
+    #         "arabianMate",
+    #         "bodenMate",
+    #         "smotheredMate",
+    #         "backRankMate",
+    #         "doubleBishopMate",
+    #         "dovetailMate",
+    #         "hookMate",
+    #     ]
+    # )
+    # t.extend(["attackingF2F7", "promotion"])
+    # t.extend(
+    #     [
+    #         "exposedKing",
+    #         "hangingPiece",
+    #         "trappedPiece",
+    #         "attraction",
+    #         "clearance",
+    #         "defensiveMove",
+    #         "deflection",
+    #         "quietMove",
+    #         "xRayAttack",
+    #         "trappedPiece",
+    #         "sacrifice",
+    #         "castling",
+    #     ]
+    # )
+
+    r = 2000
+    extract_tactics(
+        database_fn="lichess_db_puzzle.db",
+        min_rating=r,
+        max_rating=r + 10,
+        popularity=90,
+        themes=t,
+        tactics_per_theme=10)
