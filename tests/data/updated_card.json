@@ -1,5 +1,5 @@
 {
-    "due": "2024-01-01 12:10:00.000001",
+    "due": "2024-01-01 12:10:00.000001+00:00",
     "stability": 2.4,
     "difficulty": 4.93,
     "elapsed_days": 0,
@@ -12,5 +12,5 @@
     "moves": "f2g3 e6e7 b2b1 b3c1 b1c1 h6c1",
     "themes": "crushing hangingPiece long middlegame",
     "source": "lichess",
-    "last_review": "2024-01-01 12:00:00.000001"
+    "last_review": "2024-01-01 12:00:00.000001+00:00"
 }

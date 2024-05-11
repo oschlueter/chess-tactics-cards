@@ -2,7 +2,7 @@ import csv
 import itertools
 import json
 import random
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 
 import chess
@@ -162,13 +162,13 @@ class Deck:
         self.cards.sort(key=lambda card: card.due)
 
     def due_until_end_of_day(self):
-        return [card for card in self.cards if card.due.date() <= datetime.utcnow().date()]
+        return [card for card in self.cards if card.due.date() <= datetime.now(UTC).date()]
 
     def due_after_end_of_day(self):
-        return [card for card in self.cards if card.due.date() > datetime.utcnow().date()]
+        return [card for card in self.cards if card.due.date() > datetime.now(UTC).date()]
 
     def due(self):
-        return [card for card in self.cards if card.due < datetime.utcnow()]
+        return [card for card in self.cards if card.due < datetime.now(UTC)]
 
     @staticmethod
     def shuffle(cards: [ChessCard]):
@@ -202,7 +202,6 @@ class Deck:
                 ],
                 decks_dir,
             )
-            deck.save_deck()
 
             return deck
 

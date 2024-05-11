@@ -11,6 +11,7 @@ def test_show_due__sample__does_not_raise_error(tmp_path):
         csv_fn=str(Path(__file__).resolve().parent / "data/extract.csv"),
         decks_dir=str(tmp_path),
     )
+    deck.save_deck()
 
     # when
     show(deck.due_until_end_of_day(), "due")

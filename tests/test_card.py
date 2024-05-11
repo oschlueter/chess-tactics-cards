@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 
 import freezegun
@@ -19,6 +19,7 @@ def sample_deck(tmp_path):
 
     with freezegun.freeze_time("2024-01-01 12:00:00.000001"):
         deck = Deck.create_from_csv(deck_name, csv_fn, str(decks_path))
+        deck.save_deck()
 
     yield deck
 
@@ -28,7 +29,7 @@ class TestCard:
     def test_save_card__with_review_log__stores_card_and_review_log_correctly(self, sample_deck: Deck):
         # given
         f = FSRS()
-        scheduling_cards = f.repeat(sample_deck.cards[0], datetime.utcnow())
+        scheduling_cards = f.repeat(sample_deck.cards[0], datetime.now(UTC))
 
         updated_card = scheduling_cards[Rating.Good].card
         review_log = scheduling_cards[Rating.Good].review_log

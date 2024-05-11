@@ -47,6 +47,7 @@ def test_train__sample__does_not_raise_error(tmp_path, user_input):
         csv_fn=str(Path(__file__).resolve().parent / "data/extract_single.csv"),
         decks_dir=str(tmp_path),
     )
+    deck.save_deck()
 
     with patch("builtins.input", side_effect=user_input):
         # when
